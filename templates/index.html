@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MRI Tumor Detection System</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #eef2f3, #8e9eab);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      font-weight: 700;
+    }
+
+    .lead {
+      color: #6c757d;
+    }
+
+    .form-label {
+      font-weight: 600;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      border: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+    }
+
+    .card-result {
+      background-color: #f8f9fa;
+      border-radius: 10px;
+      border: 1px solid #dee2e6;
+      position: relative;
+      padding: 20px;
+      margin-top: 30px;
+    }
+
+    .card-result img {
+      max-height: 350px;
+      margin-top: 20px;
+      border-radius: 10px;
+      border: 2px solid #dee2e6;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .close-btn:hover {
+      background-color: #bb2d3b;
+    }
+
+    ul {
+      padding-left: 1.2rem;
+    }
+
+    ul li {
+      margin-bottom: 6px;
+    }
+
+    .info-title {
+      font-weight: 600;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="text-center mb-4">
+      <h1 class="text-primary">🧠 MRI Tumor Detection</h1>
+      <p class="lead">Upload an MRI image to identify tumor presence and its type.</p>
+    </div>
+
+    <!-- File Upload Form -->
+    <form method="POST" enctype="multipart/form-data">
+      <div class="mb-3">
+        <label for="file" class="form-label">Select MRI Image:</label>
+        <input type="file" class="form-control" id="file" name="file" accept="image/*" required>
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Upload & Detect</button>
+    </form>
+
+    <!-- Result Section -->
+    {% if result %}
+    <div id="results">
+      <div class="card-result">
+        <button class="close-btn" onclick="document.getElementById('results').style.display='none'">Close</button>
+        
+        <h4 class="text-success">{{ result }}</h4>
+        <p class="text-muted">Confidence Level: <strong>{{ confidence }}%</strong></p>
+        <img src="{{ file_path }}" class="img-fluid" alt="Uploaded MRI Image">
+
+        <!-- Tumor Type Info -->
+        <div class="mt-4">
+          {% if result == "glioma" %}
+          <h5 class="info-title">🧬 About Glioma</h5>
+          <p>Gliomas are brain tumors originating from glial cells. They vary in aggressiveness and can affect brain function depending on size and location.</p>
+          <ul>
+            <li>📌 Symptoms: Headaches, seizures, memory issues.</li>
+            <li>🩺 Precautions: Neurological monitoring, regular imaging, avoid radiation.</li>
+            <li>🍎 Lifestyle Tips: Antioxidant-rich diet, hydration, reduced stress.</li>
+          </ul>
+
+          {% elif result == "meningioma" %}
+          <h5 class="info-title">🧠 About Meningioma</h5>
+          <p>Meningiomas develop from the meninges covering the brain. While most are benign, they can cause symptoms due to pressure on nearby tissues.</p>
+          <ul>
+            <li>📌 Symptoms: Visual/hearing issues, headaches, balance trouble.</li>
+            <li>🩺 Precautions: Regular MRIs, early treatment if symptoms arise.</li>
+            <li>🍎 Lifestyle Tips: Avoid smoking and alcohol, stress control, balanced sleep.</li>
+          </ul>
+
+          {% elif result == "pituitary" %}
+          <h5 class="info-title">🧪 About Pituitary Tumors</h5>
+          <p>Pituitary tumors occur in the gland controlling hormones. They can disrupt hormone production and bodily functions.</p>
+          <ul>
+            <li>📌 Symptoms: Hormonal imbalance, fatigue, vision disturbances.</li>
+            <li>🩺 Precautions: Endocrine assessments, hormone blood tests.</li>
+            <li>🍎 Lifestyle Tips: Low-stress lifestyle, quality sleep, track physical changes.</li>
+          </ul>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</body>
+</html>
